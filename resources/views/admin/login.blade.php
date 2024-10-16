@@ -30,19 +30,10 @@
                         <div class="input-group"><span class="input-group-text"><i class="icon-email"></i></span>
                             <input class="form-control"  id="telegram" name="telegram" type="text" required="" placeholder="123456">
                         </div>
-                        @error('email')
+                        @error('password')
                         <p class='text-danger'>{{$message}}</p>
                         @enderror
                     </div>
-{{--                    <div class="form-group">--}}
-{{--                        <label for="password">Password</label>--}}
-{{--                        <div class="input-group"><span class="input-group-text"><i class="icon-lock"></i></span>--}}
-{{--                            <input class="form-control"  id="password"  type="password" name="password" required="" placeholder="*********">--}}
-{{--                        </div>--}}
-{{--                        @error('password')--}}
-{{--                        <p class='text-danger'>{{$message}}</p>--}}
-{{--                        @enderror--}}
-{{--                    </div>--}}
                     <div class="form-group mx-auto">
                         <button class="btn btn-primary btn-block" type="submit">Sign in</button>
                     </div>

@@ -234,7 +234,7 @@ class TelegramBotController extends Controller
         if ($userLang->language == 'English') {
             $this->sendTextMessage($chatId, "Please! Express your complete request in a single message.");
         } else{
-            $this->sendTextMessage($chatId, "Murojaatni yozishingiz mumkin. Iltimos! Xabarni bittada to'liq ifodalab yozing.");
+            $this->sendTextMessage($chatId, "Murojaatni yozishingiz mumkin. Iltimos! Xabarni bir yuborishda to'liq ifodalab yozing.");
         }
 
 
@@ -337,10 +337,22 @@ class TelegramBotController extends Controller
 
         // Kodni Cache'da 2 daqiqaga saqlash
 //        Cache::put('login_code_' . $chatId, $loginCode, now()->addMinutes(2));
+        try {
+            if (Cache::store('database')->has($chatId)){
+                $getCache = Cache::store('database')->get($chatId);
+                Cache::store('database')->forget($getCache['loginCode']);
+                Cache::store('database')->forget($chatId);
+            }
+        } catch (\Exception $exception){
+            $this->sendMe($exception->getMessage());
+        }
 
         Cache::store('database')->put($loginCode, [
             'loginCode' => $loginCode,
             'TelegramChatId' => $chatId,
+        ], 120);
+        Cache::store('database')->put($chatId, [
+            'loginCode' => $loginCode,
         ], 120);
 
         // Kodni foydalanuvchiga yuborish
