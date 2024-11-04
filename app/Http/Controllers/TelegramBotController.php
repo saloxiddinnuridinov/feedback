@@ -356,7 +356,7 @@ class TelegramBotController extends Controller
         ], 120);
 
         // Kodni foydalanuvchiga yuborish
-        $this->sendTextMessage($chatId, "Sizning login kod: `$loginCode`\n\nhttps://feedback.univ-silkroad.uz/\n\nUshbu kodni nusxa olib, web sahifaga kiriting.", ['parse_mode' => 'Markdown']);
+        $this->sendTextMessage($chatId, "Sizning login kod: `$loginCode`\n\nhttps://feedback.univ-silkroad.uz/\n\nUshbu kodni nusxa olib, web sahifaga kiriting.", ['parse_mode' => 'MarkdownV2']);
     }
 
 }
