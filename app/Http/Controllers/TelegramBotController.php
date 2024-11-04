@@ -261,7 +261,7 @@ class TelegramBotController extends Controller
                 'keyboard' => [
                     [['text' => 'Complaint']], //Shikoyat
                     [['text' => 'Offer']],   //Taklif
-                    [['text' => 'Language/Til']]
+                    [['text' => '🌎Til/Language🌎']]
                 ],
                 'resize_keyboard' => true,
                 'one_time_keyboard' => true,
