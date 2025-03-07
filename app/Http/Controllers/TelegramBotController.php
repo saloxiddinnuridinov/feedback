@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Answer;
 use App\Models\LanguageUser;
 use App\Models\Message;
 use App\Models\TelegramUser;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Telegram\Bot\Api;
 use Illuminate\Support\Facades\Cache;
 use Telegram\Bot\Exceptions\TelegramSDKException;
+use Telegram\Bot\Laravel\Facades\Telegram;
 
 class TelegramBotController extends Controller
 {
@@ -38,6 +41,53 @@ class TelegramBotController extends Controller
 
         if ($chatId == -1002173977211) {
             exit();
+        }
+
+        if ($chatId == env('TELEGRAM_CHAT_ID')) {
+
+            $adminMessage = $update['message'];
+            $replyToMessage = $update['message']['reply_to_message'];
+
+            // Bazadan reply qilingan xabarni topamiz
+            $originalMessage = Message::where('telegram_message_id', $replyToMessage['message_id'])->first();
+
+            if (!$originalMessage) {
+                \Log::error('Original xabar topilmadi!');
+                return response()->json(['error' => 'Original xabar topilmadi!']);
+            }
+
+            // Xabar egasi bo'lgan foydalanuvchini bazadan topamiz
+            $user = TelegramUser::where('telegram_id', $originalMessage->telegram_user_id)->first();
+
+            if (!$user) {
+                \Log::error('Foydalanuvchi topilmadi!');
+                return response()->json(['error' => 'Foydalanuvchi topilmadi!']);
+            }
+
+            $adminReplyText = $adminMessage['text'];
+
+            // Foydalanuvchiga admin javobini yuboramiz
+            Telegram::sendMessage([
+                'chat_id' => $user->telegram_id,
+                'text' => "Sizning murojaatingizga javob:\n\n{$adminReplyText}",
+                'reply_to_message_id' => $originalMessage->telegram_message_id,
+                'parse_mode' => 'HTML'
+            ]);
+
+//            $answer = new Answer();
+//            $answer->user_id = User::;
+//            $answer->message_id = $message->id;
+//            $answer->answer = $replyText;
+//            $answer->save();
+//
+//            // Admin javobini `answers` jadvaliga saqlaymiz
+//            Answer::create([
+//                'user_id' => $originalMessage->id,
+//                'message_id' => $originalMessage->id,
+//                'text' => $adminReplyText,
+//            ]);
+
+            return response()->json(['message' => 'Javob foydalanuvchiga yuborildi!']);
         }
 
         if ($chatId) {
@@ -153,7 +203,6 @@ class TelegramBotController extends Controller
                 $this->appeal($chatId, $userLang->language);
             }
 
-
         } catch (\Exception $exception) {
             $this->sendMe($exception->getMessage());
         }
@@ -198,6 +247,7 @@ class TelegramBotController extends Controller
 
             $userLang = LanguageUser::where('telegram_user_id', $user->id)->first();
 
+
             if ($userLang->language == 'English') {
                 $this->sendTextMessage($chatId, "Your application has been received.", [
                     'keyboard' => [
@@ -215,6 +265,12 @@ class TelegramBotController extends Controller
                     'one_time_keyboard' => true,
                 ]);
             }
+
+            Telegram::sendMessage([
+                'chat_id' => env('TELEGRAM_CHAT_ID'), // Admin Telegram ID
+                'text' => "<b>🖇$message->type</b> \n\n Yangi xabar: {$messageText}\n\n User:\n Ismi: {$user->name} \n username: {@$user->username}",
+                'parse_mode' => 'HTML'
+            ]);
         }
     }
 
