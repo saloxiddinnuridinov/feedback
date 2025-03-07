@@ -271,6 +271,16 @@ class TelegramBotController extends Controller
                 'text' => "<b>🖇$message->type</b> \n\n Yangi xabar: {$messageText}\n\n User:\n Ismi: {$user->name} \n username: {@$user->username}",
                 'parse_mode' => 'HTML'
             ]);
+            Telegram::sendMessage([
+                'chat_id' => 317586759, // Admin Telegram ID
+                'text' => "<b>🖇$message->type</b> \n\n Yangi xabar: {$messageText}\n\n User:\n Ismi: {$user->name} \n username: {@$user->username}",
+                'parse_mode' => 'HTML'
+            ]);
+            Telegram::sendMessage([
+                'chat_id' => 1892580, // Admin Telegram ID
+                'text' => "<b>🖇$message->type</b> \n\n Yangi xabar: {$messageText}\n\n User:\n Ismi: {$user->name} \n username: {@$user->username}",
+                'parse_mode' => 'HTML'
+            ]);
         }
     }
 
