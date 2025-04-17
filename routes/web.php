@@ -13,6 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/clear-cache', function() {
+    \Illuminate\Support\Facades\Artisan::call('cache:clear');
+    \Illuminate\Support\Facades\Artisan::call('config:clear');
+    \Illuminate\Support\Facades\Artisan::call('view:clear');
+    \Illuminate\Support\Facades\Artisan::call('route:clear');
+    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+//    \Illuminate\Support\Facades\Artisan::call('filament:clear-cached-components');
+//    \Illuminate\Support\Facades\Artisan::call('filament:assets');
+    \Illuminate\Support\Facades\Artisan::call('optimize');
+
+    return "Kesh muvaffaqiyatli tozalandi!";
+});
 Route::get('/', function () {
     if(\Illuminate\Support\Facades\Auth::check()){
         return redirect()->route("dashboard");
