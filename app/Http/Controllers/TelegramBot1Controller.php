@@ -11,7 +11,7 @@ use Telegram\Bot\Api;
 use Illuminate\Support\Facades\Cache;
 use Telegram\Bot\Exceptions\TelegramSDKException;
 
-class TelegramBotController extends Controller
+class TelegramBot1Controller extends Controller
 {
     protected Api $telegram;
 
