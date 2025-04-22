@@ -19,11 +19,10 @@ class TelegramBotController extends Controller
     protected Api $telegram;
 
     /**
-     * @throws TelegramSDKException
      */
     public function __construct()
     {
-        $this->telegram = new Api(env('TELEGRAM_BOT_TOKEN'));
+        $this->telegram = new Api('7723664256:AAGAv1zKf06ZVoj18YJ3WLWrrMthflIVad0');
     }
 
     /**
@@ -42,53 +41,6 @@ class TelegramBotController extends Controller
         if ($chatId == -1002173977211) {
             exit();
         }
-
-//        if ($chatId == env('TELEGRAM_CHAT_ID')) {
-//
-//            $adminMessage = $update['message'];
-//            $replyToMessage = $update['message']['reply_to_message'];
-//
-//            // Bazadan reply qilingan xabarni topamiz
-//            $originalMessage = Message::where('telegram_message_id', $replyToMessage['message_id'])->first();
-//
-//            if (!$originalMessage) {
-//                \Log::error('Original xabar topilmadi!');
-//                return response()->json(['error' => 'Original xabar topilmadi!']);
-//            }
-//
-//            // Xabar egasi bo'lgan foydalanuvchini bazadan topamiz
-//            $user = TelegramUser::where('telegram_id', $originalMessage->telegram_user_id)->first();
-//
-//            if (!$user) {
-//                \Log::error('Foydalanuvchi topilmadi!');
-//                return response()->json(['error' => 'Foydalanuvchi topilmadi!']);
-//            }
-//
-//            $adminReplyText = $adminMessage['text'];
-//
-//            // Foydalanuvchiga admin javobini yuboramiz
-//            Telegram::sendMessage([
-//                'chat_id' => $user->telegram_id,
-//                'text' => "Sizning murojaatingizga javob:\n\n{$adminReplyText}",
-//                'reply_to_message_id' => $originalMessage->telegram_message_id,
-//                'parse_mode' => 'HTML'
-//            ]);
-//
-////            $answer = new Answer();
-////            $answer->user_id = User::;
-////            $answer->message_id = $message->id;
-////            $answer->answer = $replyText;
-////            $answer->save();
-////
-////            // Admin javobini `answers` jadvaliga saqlaymiz
-////            Answer::create([
-////                'user_id' => $originalMessage->id,
-////                'message_id' => $originalMessage->id,
-////                'text' => $adminReplyText,
-////            ]);
-//
-//            return response()->json(['message' => 'Javob foydalanuvchiga yuborildi!']);
-//        }
 
         if ($chatId) {
             // Handle /start command

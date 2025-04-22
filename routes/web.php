@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('telegramBot', [\App\Http\Controllers\TelegramBotController::class, 'handle'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
+
 Route::get('/clear-cache', function() {
     \Illuminate\Support\Facades\Artisan::call('cache:clear');
     \Illuminate\Support\Facades\Artisan::call('config:clear');
@@ -52,7 +55,6 @@ Route::middleware('auth')->group(function () {
 
 });
 
-Route::post('telegramBot', [\App\Http\Controllers\TelegramBotController::class, 'handle'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);;
 
 Route::get('/webhook', function () {
     return file_get_contents("https://api.telegram.org/bot" . env('TELEGRAM_BOT_TOKEN') . "/setwebhook?url=" . env('WEBHOOK_URL') . "/telegramBot");
